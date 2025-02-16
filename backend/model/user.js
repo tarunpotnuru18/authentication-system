@@ -2,13 +2,15 @@ import mongoose from "mongoose";
 
 let userSchema = new mongoose.Schema({
   userName: { type: String, required: true },
-  email: { type: String, required: true,unique:true },
+  email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   isVerified: { type: Boolean, default: false },
   verificationToken: { type: String },
   verificationTokenExpiresAt: { type: Date },
   resetPasswordToken: { type: String },
   resetPasswordTokenExpiresAt: { type: String },
+  twoFactorToken: { type: String },
+  twoFactorTokenExpiresAt: { type: Date },
 });
 
 let userModel = mongoose.model("users", userSchema);

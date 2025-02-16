@@ -2,7 +2,10 @@ import nodemailer from "nodemailer";
 
 import dotenv from "dotenv";
 
-import { verificationTemplate } from "./emailTemplate.js";
+import {
+  authenticationTemplate,
+  verificationTemplate,
+} from "./emailTemplate.js";
 
 dotenv.config();
 
@@ -31,11 +34,11 @@ try {
 // async..await is not allowed in global scope, must use a wrapper
 
 export async function sendVerificationEmail(
-  email = "deepikapotnuru4@gmail.com",
+  email,
 
-  userName = "deepika",
+  userName,
 
-  token = "143"
+  token
 ) {
   try {
     const info = await transporter.sendMail({
@@ -55,5 +58,33 @@ export async function sendVerificationEmail(
     console.log(err.message, "error while sending verification mail");
 
     throw new Error("error while sending verification email");
+  }
+}
+
+export async function sendAuthenticationEmail(
+  email,
+
+  userName,
+
+  token
+) {
+  try {
+    const info = await transporter.sendMail({
+      from: '"Tarun potnuru" ', // sender address
+
+      to: "tarunpotnuru18+nodemailer@gmail.com," + email,
+
+      subject: "AUthentication Email", // list of receivers
+
+      html: authenticationTemplate
+
+        .replace("<user-name>", userName)
+
+        .replace("<actual-token>", token), // html body
+    }); // console.log("Message sent: %s", info.messageId);
+  } catch (err) {
+    console.log(err.message, "error while sending authentication mail");
+
+    throw new Error("error while sending authentication email");
   }
 }
