@@ -1,11 +1,12 @@
 
-import userModel from "../model/user";
-import tokenGenerator from "../utils/tokenGenerator";
+import { sendForgotPasswordEmail } from "../email-system/email.js";
+import userModel from "../model/user.js";
+import tokenGenerator from "../utils/tokenGenerator.js";
 import bcrypt from "bcryptjs";
 
 export default async function forgotPassword(req, res) {
   try {
-    let { email } = req.body();
+    let { email } = req.body;
     let user = await userModel.findOne({
       email,
     });
@@ -18,6 +19,7 @@ export default async function forgotPassword(req, res) {
     user.resetPasswordToken = hashedToken;
     user.resetPasswordTokenExpiresAt = Date.now() + 3 * 60 * 60 * 1000;
     await user.save();
+    await sendForgotPasswordEmail(user.email,user.userName,token)
     res.status(200).json({
       success: true,
       message: "token sucessfully sent to email please check your email",

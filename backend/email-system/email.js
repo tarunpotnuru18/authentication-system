@@ -4,6 +4,9 @@ import dotenv from "dotenv";
 
 import {
   authenticationTemplate,
+  forgotPasswordTemplate,
+  loginTemplate,
+  passwordResetSuccessfulTemplate,
   verificationTemplate,
 } from "./emailTemplate.js";
 
@@ -86,5 +89,63 @@ export async function sendAuthenticationEmail(
     console.log(err.message, "error while sending authentication mail");
 
     throw new Error("error while sending authentication email");
+  }
+}
+
+export async function sendForgotPasswordEmail(
+  email,
+
+  userName,
+
+  link
+) {
+  try {
+    const info = await transporter.sendMail({
+      from: '"Tarun potnuru" ', // sender address
+
+      to: "tarunpotnuru18+nodemailer@gmail.com," + email,
+
+      subject: "forgotpassword Email", // list of receivers
+
+      html: forgotPasswordTemplate
+
+        .replace("<user-name>", userName)
+
+        .replaceAll("[actual-link]", link), // html body
+    }); // console.log("Message sent: %s", info.messageId);
+  } catch (err) {
+    console.log(err.message, "error while sending forgotpassword mail");
+
+    throw new Error("error while sending forgotpassword email");
+  }
+}
+
+export async function sendResetPasswordEmail(email, userName) {
+  try {
+    const info = await transporter.sendMail({
+      from: '"Tarun potnuru" ', // sender address
+
+      to: "tarunpotnuru18+nodemailer@gmail.com," + email,
+      subject: "reset Email", // list of receivers
+      html: passwordResetSuccessfulTemplate.replace("<user-name>", userName), // html body
+    }); // console.log("Message sent: %s", info.messageId);
+  } catch (error) {
+    console.log(error.message, "error from reset email");
+    throw new Error("error while sending reset email");
+  }
+}
+
+export async function sendloginEmail(email, userName) {
+  try {
+    const info = await transporter.sendMail({
+      from: '"Tarun potnuru" ', // sender address
+
+      to: "tarunpotnuru18+nodemailer@gmail.com," + email,
+      subject: "login Email", // list of receivers
+      html: loginTemplate.replace("<user-name>", userName), // html body
+    }); // console.log("Message sent: %s", info.messageId);
+  } catch (error) {
+    console.log(error.message, "error from reset email");
+    throw new Error("error while sending login email");
   }
 }

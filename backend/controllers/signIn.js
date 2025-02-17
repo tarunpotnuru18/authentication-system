@@ -5,6 +5,7 @@ import { sendAuthenticationEmail } from "../email-system/email.js";
 import tokenGenerator from "../utils/tokenGenerator.js";
 import bcrypt from "bcryptjs";
 export default async function signin(req, res) {
+
   try {
     let { email, password } = req.body;
     let requiredSchema = await zod.object({
@@ -33,6 +34,7 @@ export default async function signin(req, res) {
     user.twoFactorToken = hashedToken;
     user.twoFactorTokenExpiresAt = Date.now() + 10 * 60 * 60 * 1000;
     await user.save();
+    
     sendAuthenticationEmail(user.email, user.userName, token);
     res
       .status(200)

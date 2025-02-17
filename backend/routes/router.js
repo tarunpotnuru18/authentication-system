@@ -1,16 +1,24 @@
-import signIn from "../controllers/signIn.js";
-import signUp from "../controllers/signUp.js";
-import verifyEmail from "../controllers/verify-email.js";
-import resetPassword from "../controllers/reset-password.js";
 import express from "express";
-import forgotPassword from "../controllers/forgot-password.js";
-import authenticateUser from "../controllers/auth-user.js";
+import {
+  signUp,
+  signIn,
+  resetPassword,
+  verifyEmail,
+  forgotPassword,
+  authenticateUser,
+  authCheck,
+  logOut,
+} from "../controllers/index.js";
+import jwtVerify from "../middlewares/jwtVerify.js";
+
 let router = express.Router();
 
 router.post("/signup", signUp);
 router.post("/signin", signIn);
-router.post("/verify-email",verifyEmail)
-router.post("/reset-password",resetPassword)
-router.post("/forgot-password",forgotPassword)
-router.post("/authenticateUser",authenticateUser)
+router.post("/verify-email", verifyEmail);
+router.post("/reset-password", resetPassword);
+router.post("/forgot-password", forgotPassword);
+router.post("/authenticate-User", authenticateUser);
+router.post("/authcheck", jwtVerify, authCheck);
+router.post("/logout", logOut);
 export default router;

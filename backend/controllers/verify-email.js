@@ -2,13 +2,13 @@ import zod from "zod";
 import zodErrorFormatter from "../utils/zodError.js";
 import userModel from "../model/user.js";
 import bcrypt from "bcryptjs";
-import jwtGenerator from "../utils/jwtGenerator";
+import jwtGenerator from "../utils/jwtGenerator.js";
 
 export default async function verifyEmail(req, res) {
   try {
-    let { email, token } = req.body();
+    let { email, token } = req.body;
     let requiredSchema = zod.object({
-      email: zod.email("email is not in correct format"),
+      email: zod.string("email must be a string").email("email is not in correct format"),
       token: zod.string("token must be a string"),
     });
     let schemaValidation = requiredSchema.safeParse(req.body);
@@ -27,6 +27,7 @@ export default async function verifyEmail(req, res) {
     if (!result) {
       throw new Error("invalid token");
     }
+    user.isVerified = true
     user.verificationToken = undefined;
     user.verificationTokenExpiresAt = undefined;
     user.save();

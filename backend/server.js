@@ -8,9 +8,9 @@ import connectTODB from "./database/connectToDB.js";
 let app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
-connectTODB()
-app.use("/",router)
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+connectTODB();
+app.use("/", router);
 app.listen(process.env.PORT, () => {
   console.log("server started at " + process.env.PORT);
 });

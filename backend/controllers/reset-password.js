@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import userModel from "../model/user.js";
+import { sendResetPasswordEmail } from "../email-system/email.js";
 
 export default async function resetPassword(req, res) {
   try {
@@ -20,6 +21,8 @@ export default async function resetPassword(req, res) {
     user.resetPasswordToken = undefined;
     user.resetPasswordTokenExpiresAt = undefined;
     await user.save();
+    await sendResetPasswordEmail(user.email, user.userName);
+    res.clearCookie("token")
     res.status(200).json({
       message: "password changed successfully",
       success: true,
