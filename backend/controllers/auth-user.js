@@ -7,8 +7,8 @@ import { sendloginEmail } from "../email-system/email.js";
 export default async function authenticateUser(req, res) {
   try {
     let { email, token } = req.body;
-    console.log(typeof token.toString())
-    
+    console.log(typeof token.toString());
+
     let requiredSchema = zod.object({
       email: zod.string("token must be a string").email("invalid email format"),
       token: zod.string("token must be a string"),
@@ -16,7 +16,7 @@ export default async function authenticateUser(req, res) {
 
     let schemaValidation = requiredSchema.safeParse(req.body);
     if (schemaValidation.success === false) {
-      console.log(schemaValidation.error.issues)
+      console.log(schemaValidation.error.issues);
       throw new Error(zodErrorFormatter(schemaValidation.error.issues));
     }
     let user = await userModel.findOne({
@@ -43,10 +43,18 @@ export default async function authenticateUser(req, res) {
 
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
-    await sendloginEmail(user.email,user.userName)
+    await sendloginEmail(user.email, user.userName);
     res.status(200).json({
       success: false,
       message: "two factor authentication sucessful",
+      user: {
+        ...user,
+        verificationToken: undefined,
+        verificationTokenExpiresAt: undefined,
+        password: undefined,
+        resetPasswordToken: undefined,
+        resetPasswordTokenExpiresAt: undefined,
+      },
     });
   } catch (error) {
     console.log("error from authenticate user: ", error);

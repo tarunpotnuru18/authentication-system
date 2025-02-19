@@ -8,7 +8,9 @@ export default async function verifyEmail(req, res) {
   try {
     let { email, token } = req.body;
     let requiredSchema = zod.object({
-      email: zod.string("email must be a string").email("email is not in correct format"),
+      email: zod
+        .string("email must be a string")
+        .email("email is not in correct format"),
       token: zod.string("token must be a string"),
     });
     let schemaValidation = requiredSchema.safeParse(req.body);
@@ -27,13 +29,14 @@ export default async function verifyEmail(req, res) {
     if (!result) {
       throw new Error("invalid token");
     }
-    user.isVerified = true
+    user.isVerified = true;
     user.verificationToken = undefined;
     user.verificationTokenExpiresAt = undefined;
     user.save();
     res.status(200).json({
       success: true,
       message: "verification successful",
+      user: { ...user, password: undefined },
     });
   } catch (error) {
     console.log("error from verify-email", error.message);

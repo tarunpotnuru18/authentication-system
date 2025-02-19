@@ -12,7 +12,16 @@ export default async function authCheck(req, res) {
 
     return res.status(200).json({
       success: true,
-      user: { ...user._doc, password: undefined },
+      user: {
+        ...user._doc,
+        password: undefined,
+        verificationToken: undefined,
+        verificationTokenExpiresAt: undefined,
+        resetPasswordToken: undefined,
+        resetPasswordTokenExpiresAt: undefined,
+        twoFactorToken: undefined,
+        twoFactorTokenExpiresAt: undefined,
+      },
     });
   } catch (error) {
     console.log("error from authcheck");
