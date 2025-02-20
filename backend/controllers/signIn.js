@@ -28,7 +28,7 @@ export default async function signin(req, res) {
     if (!user) {
       throw new Error("user doesnt exist");
     }
-    let token = tokenGenerator(5);
+    let token = tokenGenerator(6);
 
     let hashedToken = await bcrypt.hash(token.toString(), 9);
     user.twoFactorToken = hashedToken;

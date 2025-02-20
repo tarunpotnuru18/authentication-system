@@ -1,8 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Just+Another+Hand&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-hand: "Just Another Hand", serif;
+  --font-jakarta: "Plus Jakarta Sans", serif
+}
 
 :root {
   --background: hsl(0 0% 100%);
@@ -94,6 +100,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

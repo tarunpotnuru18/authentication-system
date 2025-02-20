@@ -3,6 +3,7 @@ import userModel from "../model/user.js";
 export default async function authCheck(req, res) {
   try {
     let userID = req.userID;
+
     let user = await userModel.findOne({
       _id: userID,
     });

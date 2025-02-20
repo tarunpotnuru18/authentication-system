@@ -111,7 +111,10 @@ export async function sendForgotPasswordEmail(
 
         .replace("<user-name>", userName)
 
-        .replaceAll("[actual-link]", link), // html body
+        .replaceAll(
+          "[actual-link]",
+          `http://localhost:5173/reset-password/${link}`
+        ), // html body
     }); // console.log("Message sent: %s", info.messageId);
   } catch (err) {
     console.log(err.message, "error while sending forgotpassword mail");

@@ -45,7 +45,7 @@ export default async function authenticateUser(req, res) {
     });
     await sendloginEmail(user.email, user.userName);
     res.status(200).json({
-      success: false,
+      success: true,
       message: "two factor authentication sucessful",
       user: {
         ...user,

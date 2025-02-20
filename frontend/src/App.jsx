@@ -1,43 +1,81 @@
 import { useEffect, useState } from "react";
-import "./App.css";
 import { useStore } from "./store/store.js";
-import { Button } from "./components/ui/button";
 import { Route, Routes } from "react-router-dom";
-import Signup from "./pages/signUp.jsx";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
+import {
+  Signin,
+  Signup,
+  VerifyEmail,
+  AuthenticateUser,
+  Home,
+  ForgotPassword,
+  ResetPassword,
+  DashBoard,
+  PrivateAuthenticated,
+  PrivateLoggedIn,
+} from "./pages/index.js";
 function App() {
-  let { checkAuth, isAuthenticated } = useStore();
-  let [loading, setLoading] = useState(null);
+  let { checkAuth, isAuthenticated, user } = useStore();
+  let [loading, setLoading] = useState(true);
 
-  async function handle() {
+  async function authenticationCheck() {
     setLoading(true);
     let data = await checkAuth();
     if (data.success === false) {
+      console.log("error");
       setLoading(false);
       return null;
     }
-    useStore.setState({ user: data.user, isAuthenticated: true });
-    console.log(isAuthenticated, "here");
+    console.log("here");
+    useStore.setState({
+      user: data.user,
+      isAuthenticated: true,
+      isLoggedIn: true,
+    });
     setLoading(false);
+    return;
   }
   useEffect(() => {
-    handle();
+    authenticationCheck();
   }, []);
 
   if (loading) {
     return (
       <>
-        <div>loading</div>
+        <div>loading...</div>
       </>
     );
   }
+
   return (
     <>
-    <div>
-    <Toaster closeButton richColors />
-    </div>
+      <div>
+        <Toaster closeButton richColors />
+      </div>
       <Routes>
         <Route path="/signup" element={<Signup></Signup>}></Route>
+        <Route path="/signin" element={<Signin></Signin>}></Route>
+        <Route
+          path="/authenticate-user"
+          element={<AuthenticateUser></AuthenticateUser>}
+        ></Route>
+        <Route
+          path="/verify-email"
+          element={
+            <PrivateLoggedIn>
+              <VerifyEmail></VerifyEmail>
+            </PrivateLoggedIn>
+          }
+        ></Route>
+        <Route path="/" element={<Home></Home>}></Route>
+        <Route
+          path="/forgot-password"
+          element={<ForgotPassword></ForgotPassword>}
+        ></Route>
+        <Route
+          path="/reset-password/:token"
+          element={<ResetPassword></ResetPassword>}
+        ></Route>
       </Routes>
     </>
   );

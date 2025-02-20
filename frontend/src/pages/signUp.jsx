@@ -5,28 +5,42 @@ import { toast } from "sonner";
 export default function Signup() {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
-  let [username, setUsername] = useState("");
-  let { Signup } = useStore();
- let navigate = useNavigate()
-  async function handleClick() {
-    
-    let data = await Signup;
-    if (data.success === false) {
-      return Promise.reject(new Error(data.message));
+  let [userName, setUsername] = useState("");
+  let { signUp } = useStore();
+  let navigate = useNavigate();
+  function reset() {
+    setEmail("");
+    setPassword("");
+    setUsername("");
+  }
+  async function handleRequest() {
+    try {
+      let data = await signUp({
+        userName: userName,
+        email: email,
+        password: password,
+      });
+      if (data.success === false) {
+        return Promise.reject(new Error(data.message));
+      }
+      useStore.setState({ isLoggedIn: true, isAuthenticated: true });
+      navigate("/verify-email");
+      return data;
+    } catch (error) {
+      return Promise.reject(new Error(error.message));
     }
-     
-    return data
   }
 
-function toastGen(){
-    toast.promise(handleClick(),{
-        loading:"loading",
-        success: "successful",
-        error:"failed bro"
-    })
-}
-
-
+  function toastGen() {
+    toast.promise(handleRequest(), {
+      loading: "loading",
+      success: "successfull",
+      error: (err) => {
+        console.log(err);
+        return err.message;
+      },
+    });
+  }
 
   return (
     <>
@@ -44,7 +58,7 @@ function toastGen(){
             <input
               type="text"
               placeholder="enter your username"
-              value={username}
+              value={userName}
               onChange={(e) => {
                 setUsername(e.target.value);
               }}
@@ -84,7 +98,7 @@ function toastGen(){
                 toastGen();
               }}
             >
-              "signup"
+              signup
             </button>
           </div>
         </div>
