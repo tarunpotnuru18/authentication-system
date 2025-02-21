@@ -5,6 +5,7 @@ import { sendResetPasswordEmail } from "../email-system/email.js";
 export default async function resetPassword(req, res) {
   try {
     let { email, token, newPassword } = req.body;
+    console.log(email,token,newPassword)
     let user = await userModel.findOne({
       email,
       resetPasswordTokenExpiresAt: { $gt: Date.now() },
@@ -29,6 +30,7 @@ export default async function resetPassword(req, res) {
     });
   } catch (error) {
     console.log("error from reset password");
+    console.log(error)
     res.status(400).json({
       success: false,
       message: error.message,

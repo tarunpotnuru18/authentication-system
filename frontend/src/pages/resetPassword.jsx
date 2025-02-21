@@ -10,7 +10,7 @@ export default function ResetPassword() {
   let [newpassword,setNewPassword]= useState("")
   async function handleRequest() {
     try {
-      let data = await resetPassword({ email, token, password });
+      let data = await resetPassword({ email:user.email, token, password });
       if (data.success === false) {
         return Promise.reject(new Error("reset failed"));
       }
@@ -39,7 +39,7 @@ export default function ResetPassword() {
           <div className="inline-flex flex-col gap-[3px]">
             <div className="text-white text-left text-xl">changePassword</div>
             <div className="text-white text-left ">
-              {"please enter your new password" + user.username}
+              {"please enter your new password" + user.userName}
             </div>
           </div>
 

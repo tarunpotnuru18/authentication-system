@@ -6,7 +6,7 @@ export default function Signin() {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
 
-  let { signIn, } = useStore();
+  let { signIn } = useStore();
   let navigate = useNavigate();
   function reset() {
     setEmail("");
@@ -19,6 +19,7 @@ export default function Signin() {
         email: email,
         password: password,
       });
+      console.log(data)
       if (data.success === false) {
         return Promise.reject(new Error(data.message));
       }
@@ -84,7 +85,7 @@ export default function Signin() {
                 toastGen();
               }}
             >
-              signup
+              signin
             </button>
           </div>
         </div>

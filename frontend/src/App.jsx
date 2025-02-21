@@ -57,7 +57,11 @@ function App() {
         <Route path="/signin" element={<Signin></Signin>}></Route>
         <Route
           path="/authenticate-user"
-          element={<AuthenticateUser></AuthenticateUser>}
+          element={
+            <PrivateLoggedIn>
+              <AuthenticateUser></AuthenticateUser>
+            </PrivateLoggedIn>
+          }
         ></Route>
         <Route
           path="/verify-email"
@@ -70,11 +74,27 @@ function App() {
         <Route path="/" element={<Home></Home>}></Route>
         <Route
           path="/forgot-password"
-          element={<ForgotPassword></ForgotPassword>}
+          element={
+            <PrivateLoggedIn>
+              <ForgotPassword></ForgotPassword>
+            </PrivateLoggedIn>
+          }
         ></Route>
         <Route
           path="/reset-password/:token"
-          element={<ResetPassword></ResetPassword>}
+          element={
+            <PrivateAuthenticated>
+              <ResetPassword></ResetPassword>
+              </PrivateAuthenticated>
+          }
+        ></Route>
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateAuthenticated>
+              <DashBoard></DashBoard>
+            </PrivateAuthenticated>
+          }
         ></Route>
       </Routes>
     </>

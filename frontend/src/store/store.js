@@ -171,7 +171,7 @@ export let useStore = create(function (set, get) {
         return { success: false, message: error.message };
       }
     },
-    resetPassword: async function ({ token, password }) {
+    resetPassword: async function ({ email, token, password }) {
       try {
         let data = await fetch(url + "reset-password", {
           method: "POST",
@@ -179,12 +179,21 @@ export let useStore = create(function (set, get) {
             "Content-Type": "application/json",
           },
           credentials: "include",
-          body: JSON.stringify({ email:get().email, token, newPassword: password }),
+          body: JSON.stringify({
+            email,
+            token,
+            newPassword: password,
+          }),
         });
         let response = await data.json();
         if (!response.success) {
           throw new Error(response.message);
         }
+        set((state) => ({
+          isLoggedIn: false,
+          isAuthenticated: false,
+          email: "",
+        }));
 
         return {
           success: true,
