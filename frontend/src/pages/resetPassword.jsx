@@ -7,13 +7,15 @@ export default function ResetPassword() {
   let { token } = useParams();
   let { resetPassword, user, email } = useStore();
   let [password, setPassword] = useState("");
-  let [newpassword,setNewPassword]= useState("")
+  let [newpassword,setNewPassword]= useState("");
+  let [completed,isCompleted] = useState(false)
   async function handleRequest() {
     try {
       let data = await resetPassword({ email:user.email, token, password });
       if (data.success === false) {
         return Promise.reject(new Error("reset failed"));
       }
+      
       return data
 
     } catch (error) {

@@ -75,9 +75,9 @@ function App() {
         <Route
           path="/forgot-password"
           element={
-            <PrivateLoggedIn>
+            <PrivateAuthenticated>
               <ForgotPassword></ForgotPassword>
-            </PrivateLoggedIn>
+            </PrivateAuthenticated>
           }
         ></Route>
         <Route
@@ -85,7 +85,7 @@ function App() {
           element={
             <PrivateAuthenticated>
               <ResetPassword></ResetPassword>
-              </PrivateAuthenticated>
+            </PrivateAuthenticated>
           }
         ></Route>
         <Route
@@ -94,6 +94,15 @@ function App() {
             <PrivateAuthenticated>
               <DashBoard></DashBoard>
             </PrivateAuthenticated>
+          }
+        ></Route>
+
+        <Route
+          path="*"
+          element={
+            <div className="text-white w-screen h-screen text-center bg-black">
+              not a valid route
+            </div>
           }
         ></Route>
       </Routes>
