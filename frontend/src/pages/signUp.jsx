@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { useStore } from "../store/store.js";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import PasswordCheck from "@/components/passwordCheck.jsx";
 export default function Signup() {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
@@ -102,6 +103,7 @@ export default function Signup() {
             </button>
           </div>
         </div>
+          <PasswordCheck password={password}></PasswordCheck>
       </div>
     </>
   );
